@@ -29,3 +29,7 @@ resource "aws_organizations_account" "new_account" {
   role_name = "OrganizationAccountAccessRole"
   parent_id = local.selected_ou_id
 }
+
+output "parents" {
+  value = data.aws_organizations_organizational_units.top_ous.id
+}
