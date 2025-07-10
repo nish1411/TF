@@ -9,7 +9,7 @@ accounts = [
     {
         account_name   = "test1"
         account_email  = "ysetest11@gmail.com"
-    },
+    }, 
         {
         account_name   = "test3"
         account_email  = "testysedd@gmail.com"

@@ -31,7 +31,7 @@ locals {
 
 
   selected_child_ou_id = var.ou_name != "" ? lookup(local.all_child_ou_map, var.ou_name, null) : null
-  selected_root_ou_id  = var.ou_name != "" ? lookup(local.top_ou_map, var.ou_name, null) : null
+  selected_root_ou_id  = var.ou_name != "" ? lookup(local.all_parent_ou_map, var.ou_name, null) : null
   selected_parent_ou_id = (
     local.selected_child_ou_id != null ? local.selected_child_ou_id :
     local.selected_root_ou_id  != null ? local.selected_root_ou_id :
