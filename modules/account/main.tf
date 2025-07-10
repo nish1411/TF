@@ -38,7 +38,7 @@ resource "aws_organizations_account" "new_account" {
   name      = var.account_name
   email     = var.account_email
   role_name = "OrganizationAccountAccessRole"
-  parent_id = local.selected_ou_id
+  parent_id = local.selected_child_ou_id != "" ? local.selected_child_ou_id : local.selected_root_ou_id
 }
 
 output "parents" {
