@@ -10,6 +10,16 @@ data "aws_organizations_organizational_units" "all_child_ous" {
 }
 
 locals {
+  all_parent_ou_map = merge(
+    [
+      for ou_group in data.aws_organizations_organizational_units.top_ous :
+      {
+        for ou in ou_group :
+        ou.name => ou.id
+      }
+    ]...
+  ) 
+
   all_child_ou_map = merge(
     [
       for ou_group in data.aws_organizations_organizational_units.all_child_ous :
@@ -20,7 +30,8 @@ locals {
     ]...
   )
 
-  selected_ou_id = lookup(local.all_child_ou_map, var.ou_name, null)
+  selected_child_ou_id = lookup(local.all_child_ou_map, var.ou_name, null)
+  selected_root_ou_id  = lookup(local.all_parent_ou_map, var.ou_name, null)
 }
 
 resource "aws_organizations_account" "new_account" {
