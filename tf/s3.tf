@@ -5,7 +5,7 @@ provider "aws" {
 
 terraform {
   backend "s3" {
-    bucket         = "mytftftf"
+    bucket         = "terrstack"
     key            = "new/tfstate"
     region         = "ap-southeast-1"
     #dynamodb_table = "terraform-state-lock"
