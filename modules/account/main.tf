@@ -10,13 +10,15 @@ data "aws_organizations_organizational_units" "all_child_ous" {
 }
 
 locals {
-  all_child_ou_map = merge([
-    for ou_group in data.aws_organizations_organizational_units.all_child_ous :
-    {
-      for ou in ou_group.children :
-      ou.name => ou.id
-    }
-  ])
+  all_child_ou_map = merge(
+    [
+      for ou_group in data.aws_organizations_organizational_units.all_child_ous :
+      {
+        for ou in ou_group.children :
+        ou.name => ou.id
+      }
+    ]...
+  )
 
   selected_ou_id = lookup(local.all_child_ou_map, var.ou_name, null)
 }
