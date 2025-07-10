@@ -11,11 +11,9 @@ data "aws_organizations_organizational_units" "all_child_ous" {
 
 locals {
   all_parent_ou_map = merge(
-    [
+    [{
       for ou_group in data.aws_organizations_organizational_units.top_ous :
-      {
-        for ou in ou_group :
-        ou.name => ou.id
+        ou_group.name => ou_group.id
       }
     ]...
   ) 
