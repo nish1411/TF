@@ -4,19 +4,21 @@ data "aws_organizations_organizational_units" "top_ous" {
   parent_id = data.aws_organizations_organization.org.roots[0].id
 }
 
+data "aws_organizations_organizational_unit" "top_ou_details" {
+  for_each = toset(data.aws_organizations_organizational_units.top_ous.ou_ids)
+  id       = each.value
+}
+
 data "aws_organizations_organizational_units" "all_child_ous" {
   for_each  = { for ou in data.aws_organizations_organizational_units.top_ous.children : ou.name => ou.id }
   parent_id = each.value
 }
 
 locals {
-  all_parent_ou_map = merge(
-    [{
-      for ou_group in data.aws_organizations_organizational_units.top_ous :
-        ou_group.name => ou_group.id
-      }
-    ]...
-  ) 
+  all_parent_ou_map = {
+    for k, v in data.aws_organizations_organizational_unit.top_ou_details :
+    v.name => v.id
+  }
 
   all_child_ou_map = merge(
     [
